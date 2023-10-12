@@ -33,11 +33,11 @@ export default function SignIn() {
       const data = await res.json();
 
       if (data.success === false) {
-        dispatch(signInFailure(data.message))
+        dispatch(signInFailure(data.message));
         return;
       }
 
-      dispatch(signInSuccess(data))
+      dispatch(signInSuccess(data));
       navigate(targetRoute)
     } catch (error) {
       dispatch(signInFailure(error.message))

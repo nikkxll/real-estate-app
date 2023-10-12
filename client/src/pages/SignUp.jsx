@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { signUpStart, signUpSuccess, signUpFailure } from '../redux/user/userSlice.js';
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
-  const [message, setMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const { loading, error, message } = useSelector((state) => state.user)
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const delay = 1000;
   const targetRoute = '/sign-in';
 
@@ -21,7 +22,7 @@ export default function SignUp() {
     e.preventDefault();
 
     try {
-      setLoading(true);
+      dispatch(signUpStart());
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: {
@@ -33,22 +34,17 @@ export default function SignUp() {
       const data = await res.json();
 
       if (data.success === false) {
-        setLoading(false);
-        setError(data.message);
-        setMessage(null);
+        dispatch(signUpFailure(data.message));
         return;
       }
 
-      setLoading(false);
-      setError(null);
-      setMessage(data);
+      dispatch(signUpSuccess(data));
 
       setTimeout(() => {
         navigate(targetRoute);
       }, delay);
     } catch (error) {
-      setLoading(false);
-      setError(error.message);
+      dispatch(signUpFailure(error.message))
     }
   };
   return (
@@ -67,7 +63,7 @@ export default function SignUp() {
           onChange={handleChange} 
         />
         <input 
-          type="text" 
+          type="email" 
           placeholder='Email' 
           className='border p-3 rounded-xl'
           id='email' 
