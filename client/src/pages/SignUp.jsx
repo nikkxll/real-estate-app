@@ -62,7 +62,8 @@ export default function SignUp() {
           type="text" 
           placeholder='Username' 
           className='border p-3 rounded-xl'
-          id='username' 
+          id='username'
+          autoComplete="off" 
           onChange={handleChange} 
         />
         <input 
@@ -73,10 +74,11 @@ export default function SignUp() {
           onChange={handleChange} 
         />
         <input 
-          type="text" 
+          type="password" 
           placeholder='Password' 
           className='border p-3 rounded-xl'
           id='password' 
+          autoComplete="off"
           onChange={handleChange} 
         />
         <button 
