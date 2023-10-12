@@ -4,7 +4,6 @@ const initialState = {
   currentUser: null,
   error: null,
   loading: false,
-  message: null
 };
 
 const userSlice = createSlice({
@@ -15,29 +14,25 @@ const userSlice = createSlice({
         state.loading = true;
     },
     signInSuccess: (state, action) => {
-      state.currentUser = action.payload;
-      state.loading = false;
-      state.error = null;
-      state.message = action.payload;
+        state.currentUser = action.payload;
+        state.loading = false;
+        state.error = null;
     },
     signInFailure: (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
-      state.message = null;
+        state.error = action.payload;
+        state.loading = false;
     },
     signUpStart: (state) => {
         state.loading = true;
     },
     signUpSuccess: (state, action) => {
-      state.currentUser = action.payload;
-      state.loading = false;
-      state.error = null;
-      state.message = action.payload;
+        state.currentUser = action.payload;
+        state.loading = false;
+        state.error = null;
     },
     signUpFailure: (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
-      state.message = null;
+        state.error = action.payload;
+        state.loading = false;
     },
   },
 });

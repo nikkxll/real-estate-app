@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { signUpStart, signUpSuccess, signUpFailure } from '../redux/user/userSlice.js';
+import OAuth from '../components/OAuth.jsx';
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
-  const { loading, error, message } = useSelector((state) => state.user)
+  const { loading, error } = useSelector((state) => state.user)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const delay = 1000;
@@ -84,6 +85,7 @@ export default function SignUp() {
         disabled:opacity-70'>
           {loading ? 'Loading...' : 'Sign Up'}
         </button>
+        <OAuth />
       </form>
       <div className='flex gap-2 mt-3'> 
         <p>Have an account?</p>
@@ -94,7 +96,6 @@ export default function SignUp() {
         </Link>
       </div>
       {error && <p className='text-red-500 mt-5'>{error}</p>}
-      {message && <p className='text-green-700 mt-5'>{message}</p>}
     </div>
   )
 }
