@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice.js';
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
-  const [message, setMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const { loading, error, message } = useSelector((state) => state.user)
   const navigate = useNavigate();
-  const delay = 1000;
+  const dispatch = useDispatch();
   const targetRoute = '/';
 
   const handleChange = (e) => {
@@ -21,7 +21,7 @@ export default function SignIn() {
     e.preventDefault();
 
     try {
-      setLoading(true);
+      dispatch(signInStart());
       const res = await fetch('/api/auth/signin', {
         method: 'POST',
         headers: {
@@ -33,19 +33,14 @@ export default function SignIn() {
       const data = await res.json();
 
       if (data.success === false) {
-        setLoading(false);
-        setError(data.message);
-        setMessage(null);
+        dispatch(signInFailure(data.message))
         return;
       }
 
-      setLoading(false);
-      setError(null);
-      setMessage(data);
+      dispatch(signInSuccess(data))
       navigate(targetRoute)
     } catch (error) {
-      setLoading(false);
-      setError(error.message);
+      dispatch(signInFailure(error.message))
     }
   };
   return (
@@ -56,7 +51,7 @@ export default function SignIn() {
       </h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-3'>
         <input 
-          type="text" 
+          type="email" 
           placeholder='Email' 
           className='border p-3 rounded-xl'
           id='email' 
@@ -87,7 +82,6 @@ export default function SignIn() {
         </Link>
       </div>
       {error && <p className='text-red-500 mt-5'>{error}</p>}
-      {message && <p className='text-green-700 mt-5'>{message}</p>}
     </div>
   )
 }
