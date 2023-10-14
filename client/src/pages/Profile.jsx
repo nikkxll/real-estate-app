@@ -2,15 +2,19 @@ import { useSelector } from 'react-redux'
 import { useRef, useState, useEffect } from 'react'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 import { app } from '../firebase'
+import { updateUserFailure, updateUserStart, updateUserSuccess } from '../redux/user/userSlice'
+import { useDispatch } from 'react-redux'
 
 export default function Profile() {
-  const { currentUser } = useSelector(state => state.user) 
-  const fileReference =  useRef(null)
+  const { currentUser, loading, error } = useSelector(state => state.user) 
+  const fileReference = useRef(null)
+  const dispatch = useDispatch()
   const [file, setFile] = useState(undefined)
   const [fileErr, setFileErr] = useState(false)
   const [filePerc, setFilePerc] = useState(0)
   const [formData, setFormData] = useState({})
-
+  const [updateSuccess, setUpdateSuccess] = useState(false)
+  
   // firebase 
   // allow read; 
   // allow write: if
@@ -42,12 +46,51 @@ export default function Profile() {
         }
       );
   };
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData({
+      ...formData,
+      [id]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      dispatch(updateUserStart());
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json()
+
+      if (data.success === false) {
+        dispatch(updateUserFailure(data.message));
+        return;
+      }
+
+      dispatch(updateUserSuccess(data));
+      setUpdateSuccess(true);
+    } catch(error) {
+      dispatch(updateUserFailure(error.message))
+    }
+  }
+
+    const togglePasswordVisibility = (e) => {
+      e.preventDefault()
+      setShowPassword(!showPassword);
+    };
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-2xl text-center font-semibold my-4 text-slate-700'>
         Profile
       </h1>
-      <form className='flex flex-col gap-4'>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <input onChange={(e) => setFile(e.target.files[0])} 
               type="file" ref={fileReference} hidden accept='image/*' />
         <img onClick={() => fileReference.current.click()} 
@@ -55,39 +98,45 @@ export default function Profile() {
           src={formData.photo || currentUser.photo} 
           alt='profile-photo'/>
         <p className='text-center'>
-          {fileErr ? (
-            <span className='text-red-500 font-semibold'>Error occurred, try again!</span>
-          ) : 
+          {fileErr ? 
+          ( <span className='text-red-500 font-semibold'>Error occurred, try again!</span> ) : 
             filePerc > 0 && filePerc < 100 ? 
-          (
-            <span className='text-green-800 font-semibold'>{`Uploading ${filePerc}%`}</span>
-          ) :
+          ( <span className='text-green-800 font-semibold'>{`Uploading ${filePerc}%`}</span>) :
             filePerc === 100 ? 
-          (
-            <span className='text-green-800 font-semibold'>Done</span>
-          ) : 
-            ''
-          }
+          ( <span className='text-green-800 font-semibold'>Done</span>) : ''}
         </p>
-        <input type="text" placeholder='username'
+        <input 
+        type="text" 
+        placeholder='username'
+        defaultValue={currentUser.username}
         className='border p-4 rounded-xl'
+        onChange={handleChange}
         id='username'/>
-        <input type="text" placeholder='email'
+        <input 
+        type="email" 
+        placeholder='email'
+        defaultValue={currentUser.email}
         className='border p-4 rounded-xl'
+        onChange={handleChange}
         id='email'/>
-        <input type="text" placeholder='password'
+        <input 
+        type='password'
+        placeholder='password'
         className='border p-4 rounded-xl'
+        onChange={handleChange}
         id='password'/>
-        <button className='bg-slate-700 p-3 text-white
-                rounded-xl uppercase hover:opacity-90 mt-5
+        <button disabled={loading}className='bg-slate-700 p-3 text-white
+                rounded-xl uppercase hover:opacity-90 mt-4
                 disabled:opacity-70'>
-          Update
+          {loading ? 'Loading...' : 'Update'}
         </button>
       </form>
       <div className='mt-4 flex justify-between'>
         <span className='text-red-600 cursor-pointer font-semibold'>Delete Account</span>
         <span className='text-red-600 cursor-pointer font-semibold'>Sign out</span>
       </div>
+      <p className='text-red-500 mt-5'>{error ? error : ''}</p>    
+      <p className='text-green-700 mt-5'>{updateSuccess ? 'Profile successfully updated' : ''}</p>
     </div>
   )
 }

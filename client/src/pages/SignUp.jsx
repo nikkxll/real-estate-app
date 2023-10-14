@@ -6,6 +6,7 @@ import OAuth from '../components/OAuth.jsx';
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const { loading, error } = useSelector((state) => state.user)
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -48,6 +49,12 @@ export default function SignUp() {
       dispatch(signUpFailure(error.message))
     }
   };
+
+  const togglePasswordVisibility = (e) => {
+    e.preventDefault()
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className='p-3 max-w-xl mx-auto'>
       <h1 className='text-2xl text-center font-semibold 
@@ -71,13 +78,18 @@ export default function SignUp() {
           onChange={handleChange} 
         />
         <input 
-          type="password" 
+          type={showPassword ? 'text' : 'password'}
           placeholder='Password' 
           className='border p-3 rounded-xl'
           id='password' 
           autoComplete="off"
           onChange={handleChange} 
         />
+        <button 
+          onClick={togglePasswordVisibility} 
+          type="button">
+          {showPassword ? 'Hide password' : 'Show password'}
+        </button>
         <button 
           disabled={loading} 
           className='bg-slate-700 p-3 text-white
