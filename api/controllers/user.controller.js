@@ -36,7 +36,6 @@ export const updateUser = async (req, res, next) => {
   };
 
 export const deleteUser = async (req, res, next) => {
-    console.log(req);
     if (req.user.id !== req.params.id) {
         return next(errHandler(401, 'Permission denied'));
     }
