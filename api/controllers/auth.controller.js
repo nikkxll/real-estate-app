@@ -10,8 +10,8 @@ export const signup = async (req, res, next) => {
     try {
         await newUser.save()
         res.status(201).json("User successfully created!")
-    } catch (e) {
-        next(e);
+    } catch (error) {
+        next(error);
     }
 }
 
@@ -32,8 +32,8 @@ export const signin = async (req, res, next) => {
         res.cookie('access_token', token, { httpOnly: true })
             .status(200)
             .json(rest)
-    } catch (e) {
-        next(e);
+    } catch (error) {
+        next(error);
     }
 }
 
@@ -65,8 +65,8 @@ export const google = async (req, res, next) => {
                 .status(200)
                 .json(rest)
         }
-    } catch (e) {
-        next(e)
+    } catch (error) {
+        next(error)
     }
 }
 
