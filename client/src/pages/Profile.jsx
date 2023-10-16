@@ -14,6 +14,7 @@ import {
   signOutUserSuccess
 } from '../redux/user/userSlice'
 import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 export default function Profile() {
   const { currentUser, loading, error } = useSelector(state => state.user) 
@@ -169,11 +170,18 @@ export default function Profile() {
         className='border p-4 rounded-xl'
         onChange={handleChange}
         id='password'/>
-        <button disabled={loading}className='bg-slate-700 p-3 text-white
+        <button disabled={loading} className='bg-slate-700 p-3 text-white
                 rounded-xl uppercase hover:opacity-90 mt-4
                 disabled:opacity-70'>
-          {loading ? 'Loading...' : 'Update'}
+          {loading ? 'Loading...' : 'Update profile'}
         </button>
+        <Link 
+        className='bg-green-700 p-3 text-white
+                  rounded-xl uppercase hover:opacity-90
+                  disabled:opacity-70 text-center' 
+        to={'/create-listing'}>
+          Create listing
+        </Link>
       </form>
       <div className='mt-4 flex justify-between'>
         <span onClick={handleDelete} className='text-red-600 cursor-pointer font-semibold'>Delete Account</span>
