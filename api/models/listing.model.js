@@ -14,7 +14,7 @@ const listingSchema = new mongoose.Schema(
         type: String,
         required: true
     },
-    square: {
+    area: {
         type: Number,
         required: true
     },
@@ -60,7 +60,7 @@ const listingSchema = new mongoose.Schema(
     },
     userRef: {
         type: String,
-        required: true
+//        required: true
     }
 }, 
     { timestamps: true }
