@@ -35,6 +35,7 @@ export default function Profile() {
   const [userListings, setUserListings] = useState([]);
   const listingRef = useRef(null);
   const [listingSuccess, setlistingSuccess] = useState(false)
+  const [deleteListingError, setdeleteListingError] = useState(false)
 
   // firebase
   // allow read;
@@ -174,6 +175,25 @@ export default function Profile() {
     listingRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleListingDelete = async (listingId) => {
+    setdeleteListingError(false)
+
+    try {
+      const res = await fetch(`/api/listing/delete/${listingId}`, {
+        method: 'DELETE'
+      })
+      const data = await res.json()
+      if (data.success === false) {
+        setdeleteListingError(true);
+        return;
+      }
+
+      setUserListings((prev) => prev.filter((listing) => listing._id !== listingId))
+    } catch (error) {
+      setdeleteListingError(true)
+    }
+  }
+
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-2xl text-center font-semibold my-4 text-slate-700">
@@ -284,7 +304,7 @@ export default function Profile() {
           className="text-slate-700 font-semibold border border-slate-700 rounded-xl 
                   p-3 shadow-xl hover:opacity-90 disabled:opacity-70"
         >
-          Scroll down
+          Scroll to the listings
         </button>
       </div>
       {userListings && userListings.length > 0 ? (
@@ -311,7 +331,7 @@ export default function Profile() {
                 <p>{listing.name}</p>
               </Link>
               <div className="flex flex-col">
-                <button type="button" className="p-2 text-red-700 uppercase">
+                <button onClick={() => handleListingDelete(listing._id)} type="button" className="p-2 text-red-700 uppercase">
                   Delete
                 </button>
                 <button type="button" className="p-2 text-green-700 uppercase">
