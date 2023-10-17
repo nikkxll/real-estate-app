@@ -201,7 +201,7 @@ export default function CreateListing() {
   };
 
   return (
-    <main className="p-6">
+    <main className="mt-12 p-6">
       {errorUpdate ? (
         "Error occured while getting data, please try again."
       ) : (
@@ -212,7 +212,7 @@ export default function CreateListing() {
                 <h1 className="text-3xl font-semibold text-center my-7 text-slate-700">
                   Update a Listing
                 </h1>
-                <div className="p-3 flex flex-col gap-5 flex-1">
+                <div className="p-3 flex flex-col gap-7 flex-1">
                   <input
                     type="text"
                     placeholder="Name"
@@ -393,7 +393,7 @@ export default function CreateListing() {
                     </div>
                   )}
                 </div>
-                <div className="flex flex-col flex-1 pt-3">
+                <div className="flex flex-col flex-1 pt-7">
                   <p className="font-semibold">
                     Images:
                     <span className="font-normal italic ml-2">

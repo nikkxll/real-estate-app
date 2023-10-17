@@ -56,7 +56,7 @@ export default function SignIn() {
   };
 
   return (
-    <div className="p-3 max-w-xl mx-auto">
+    <div className="mt-20 p-3 max-w-xl mx-auto">
       <h1
         className="text-2xl text-center font-semibold 
       my-5 text-slate-700"

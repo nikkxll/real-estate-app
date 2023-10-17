@@ -197,7 +197,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="p-3 max-w-lg mx-auto">
+    <div className="p-3 max-w-lg mx-auto mt-20">
       <h1 className="text-2xl text-center font-semibold my-4 text-slate-700">
         Profile
       </h1>
@@ -314,6 +314,11 @@ export default function Profile() {
           <p className="text-2xl text-slate-700 font-semibold flex justify-center">
             Your Listings
           </p>
+          {deleteListingError ? (
+            <p className="text-red-700">deleteListingError</p>
+          ) : (
+            ""
+          )}
           {userListings.map((listing) => (
             <div
               key={listing._id}
@@ -341,7 +346,10 @@ export default function Profile() {
                   Delete
                 </button>
                 <Link to={`/update-listing/${listing._id}`}>
-                  <button type="button" className="p-2 text-green-700 uppercase">
+                  <button
+                    type="button"
+                    className="p-2 text-green-700 uppercase"
+                  >
                     Edit
                   </button>
                 </Link>
