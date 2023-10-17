@@ -1,16 +1,20 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
-import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice.js';
-import OAuth from '../components/OAuth.jsx';
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../redux/user/userSlice.js";
+import OAuth from "../components/OAuth.jsx";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-  const { loading, error } = useSelector((state) => state.user)
+  const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const targetRoute = '/';
+  const targetRoute = "/";
 
   const handleChange = (e) => {
     setFormData({
@@ -24,10 +28,10 @@ export default function SignIn() {
 
     try {
       dispatch(signInStart());
-      const res = await fetch('/api/auth/signin', {
-        method: 'POST',
+      const res = await fetch("/api/auth/signin", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
@@ -40,62 +44,61 @@ export default function SignIn() {
       }
 
       dispatch(signInSuccess(data));
-      navigate(targetRoute)
+      navigate(targetRoute);
     } catch (error) {
-      dispatch(signInFailure(error.message))
+      dispatch(signInFailure(error.message));
     }
   };
 
   const togglePasswordVisibility = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setShowPassword(!showPassword);
   };
 
   return (
-    <div className='p-3 max-w-xl mx-auto'>
-      <h1 className='text-2xl text-center font-semibold 
-      my-5 text-slate-700'>
+    <div className="p-3 max-w-xl mx-auto">
+      <h1
+        className="text-2xl text-center font-semibold 
+      my-5 text-slate-700"
+      >
         Sign In
       </h1>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-3'>
-        <input 
-          type="email" 
-          placeholder='Email' 
-          className='border p-3 rounded-xl'
-          id='email' 
-          onChange={handleChange} 
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        <input
+          type="email"
+          placeholder="Email"
+          className="border p-3 rounded-xl"
+          id="email"
+          onChange={handleChange}
         />
-        <input 
-          type={showPassword ? 'text' : 'password'}
-          placeholder='Password' 
-          className='border p-3 rounded-xl'
-          id='password'
+        <input
+          type={showPassword ? "text" : "password"}
+          placeholder="Password"
+          className="border p-3 rounded-xl"
+          id="password"
           autoComplete="off"
-          onChange={handleChange} 
+          onChange={handleChange}
         />
-        <button 
-          onClick={togglePasswordVisibility} 
-          type="button">
-          {showPassword ? 'Hide password' : 'Show password'}
+        <button onClick={togglePasswordVisibility} type="button">
+          {showPassword ? "Hide password" : "Show password"}
         </button>
-        <button 
-          disabled={loading} 
-          className='bg-slate-700 p-3 text-white
+        <button
+          disabled={loading}
+          className="bg-slate-700 p-3 text-white
         rounded-xl uppercase hover:opacity-90 mt-7
-        disabled:opacity-70'>
-          {loading ? 'Loading...' : 'Sign In'}
+        disabled:opacity-70"
+        >
+          {loading ? "Loading..." : "Sign In"}
         </button>
-        <OAuth/>
+        <OAuth />
       </form>
-      <div className='flex gap-2 mt-3'> 
+      <div className="flex gap-2 mt-3">
         <p>Do not have an account?</p>
         <Link to="/sign-up">
-          <span className="text-blue-800 font-semibold">
-            Sign up
-          </span>
+          <span className="text-blue-800 font-semibold">Sign up</span>
         </Link>
       </div>
-      {error && <p className='text-red-500 mt-5'>{error}</p>}
+      {error && <p className="text-red-500 mt-5">{error}</p>}
     </div>
-  )
+  );
 }
