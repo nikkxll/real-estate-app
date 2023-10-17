@@ -312,7 +312,7 @@ export default function Profile() {
       {userListings && userListings.length > 0 ? (
         <div className="my-7">
           <p className="text-2xl text-slate-700 font-semibold flex justify-center">
-            Your Listing
+            Your Listings
           </p>
           {userListings.map((listing) => (
             <div
@@ -340,9 +340,11 @@ export default function Profile() {
                 >
                   Delete
                 </button>
-                <button type="button" className="p-2 text-green-700 uppercase">
-                  Edit
-                </button>
+                <Link to={`/update-listing/${listing._id}`}>
+                  <button type="button" className="p-2 text-green-700 uppercase">
+                    Edit
+                  </button>
+                </Link>
               </div>
             </div>
           ))}
