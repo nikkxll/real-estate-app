@@ -34,8 +34,8 @@ export default function Profile() {
   const [showListingsLoading, setshowListingsLoading] = useState(false);
   const [userListings, setUserListings] = useState([]);
   const listingRef = useRef(null);
-  const [listingSuccess, setlistingSuccess] = useState(false)
-  const [deleteListingError, setdeleteListingError] = useState(false)
+  const [listingSuccess, setlistingSuccess] = useState(false);
+  const [deleteListingError, setdeleteListingError] = useState(false);
 
   // firebase
   // allow read;
@@ -176,23 +176,25 @@ export default function Profile() {
   };
 
   const handleListingDelete = async (listingId) => {
-    setdeleteListingError(false)
+    setdeleteListingError(false);
 
     try {
       const res = await fetch(`/api/listing/delete/${listingId}`, {
-        method: 'DELETE'
-      })
-      const data = await res.json()
+        method: "DELETE",
+      });
+      const data = await res.json();
       if (data.success === false) {
         setdeleteListingError(true);
         return;
       }
 
-      setUserListings((prev) => prev.filter((listing) => listing._id !== listingId))
+      setUserListings((prev) =>
+        prev.filter((listing) => listing._id !== listingId)
+      );
     } catch (error) {
-      setdeleteListingError(true)
+      setdeleteListingError(true);
     }
-  }
+  };
 
   return (
     <div className="p-3 max-w-lg mx-auto">
@@ -331,7 +333,11 @@ export default function Profile() {
                 <p>{listing.name}</p>
               </Link>
               <div className="flex flex-col">
-                <button onClick={() => handleListingDelete(listing._id)} type="button" className="p-2 text-red-700 uppercase">
+                <button
+                  onClick={() => handleListingDelete(listing._id)}
+                  type="button"
+                  className="p-2 text-red-700 uppercase"
+                >
                   Delete
                 </button>
                 <button type="button" className="p-2 text-green-700 uppercase">

@@ -27,3 +27,25 @@ export const deleteListing = async (req, res, next) => {
         next(error);
     }
 }
+
+export const updateListing = async (req, res, next) => {
+    const listing = await Listing.findById(req.params.id)
+    if (!listing) {
+        return next(errHandler(404, 'Listing not found'))
+    }
+    if (req.user.id !== listing.userRef) {
+        return next(errHandler(401, 'Permission denied'))
+    }
+
+    try {
+        const updatedListing = await Listing.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new:true }
+        )
+        res.status(200)
+        .json(updatedListing);
+    } catch (error) {
+        next(error)
+    }
+}
