@@ -33,6 +33,8 @@ export default function Profile() {
   const [showListingsError, setshowListingsError] = useState(false);
   const [showListingsLoading, setshowListingsLoading] = useState(false);
   const [userListings, setUserListings] = useState([]);
+  const listingRef = useRef(null);
+  const [listingSuccess, setlistingSuccess] = useState(false)
 
   // firebase
   // allow read;
@@ -146,6 +148,7 @@ export default function Profile() {
     e.preventDefault();
     setshowListingsError(false);
     setshowListingsLoading(true);
+    setlistingSuccess(false);
 
     try {
       const res = await fetch(`/api/user/listings/${currentUser._id}`);
@@ -159,10 +162,16 @@ export default function Profile() {
 
       setshowListingsLoading(false);
       setUserListings(data);
+      setlistingSuccess(true);
     } catch (error) {
+      console.log(error);
       setshowListingsError(true);
       setshowListingsLoading(false);
     }
+  };
+
+  const executeScroll = () => {
+    listingRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -170,7 +179,7 @@ export default function Profile() {
       <h1 className="text-2xl text-center font-semibold my-4 text-slate-700">
         Profile
       </h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input
           onChange={(e) => setFile(e.target.files[0])}
           type="file"
@@ -223,7 +232,7 @@ export default function Profile() {
         <button
           disabled={loading}
           className="bg-slate-700 p-3 text-white
-                rounded-xl uppercase hover:opacity-90 mt-4
+                rounded-xl uppercase hover:opacity-90 mt-2
                 disabled:opacity-70"
         >
           {loading ? "Loading..." : "Update profile"}
@@ -255,22 +264,32 @@ export default function Profile() {
       <p className="text-green-700 mt-5">
         {updateSuccess ? "Profile successfully updated" : ""}
       </p>
-      <div className="flex justify-center">
+      <div className="flex flex-row gap-4 justify-center">
+        <div className="flex justify-center">
+          <button
+            onClick={handleShowListings}
+            disabled={loading}
+            className="text-green-700 font-semibold border border-green-700 rounded-xl 
+            p-3 shadow-xl hover:opacity-90 disabled:opacity-70"
+          >
+            {showListingsLoading ? "Loading..." : "Show listings"}
+          </button>
+          <p className="text-red-500 mt-5">
+            {showListingsError ? "Error occured" : ""}
+          </p>
+        </div>
         <button
-          onClick={handleShowListings}
-          disabled={loading}
-          className="text-green-700 font-semibold border border-green-700 rounded-xl 
-          p-2 shadow-lg hover:opacity-90 disabled:opacity-70"
+          onClick={executeScroll}
+          disabled={!listingSuccess}
+          className="text-slate-700 font-semibold border border-slate-700 rounded-xl 
+                  p-3 shadow-xl hover:opacity-90 disabled:opacity-70"
         >
-          {showListingsLoading ? "Loading..." : "Show listings"}
+          Scroll down
         </button>
-        <p className="text-red-500 mt-5">
-          {showListingsError ? "Error occured" : ""}
-        </p>
       </div>
       {userListings && userListings.length > 0 ? (
-        <>
-          <p className="text-2xl text-slate-700 font-semibold p-4 my-4 flex justify-center">
+        <div className="my-7">
+          <p className="text-2xl text-slate-700 font-semibold flex justify-center">
             Your Listing
           </p>
           {userListings.map((listing) => (
@@ -301,10 +320,11 @@ export default function Profile() {
               </div>
             </div>
           ))}
-        </>
+        </div>
       ) : (
         ""
       )}
+      <div ref={listingRef}></div>
     </div>
   );
 }
