@@ -30,6 +30,9 @@ export default function Profile() {
   const [filePerc, setFilePerc] = useState(0);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [showListingsError, setshowListingsError] = useState(false);
+  const [showListingsLoading, setshowListingsLoading] = useState(false);
+  const [userListings, setUserListings] = useState([]);
 
   // firebase
   // allow read;
@@ -139,6 +142,29 @@ export default function Profile() {
     }
   };
 
+  const handleShowListings = async (e) => {
+    e.preventDefault();
+    setshowListingsError(false);
+    setshowListingsLoading(true);
+
+    try {
+      const res = await fetch(`/api/user/listings/${currentUser._id}`);
+      const data = await res.json();
+
+      if (data.success === false) {
+        setshowListingsError(true);
+        setshowListingsLoading(false);
+        return;
+      }
+
+      setshowListingsLoading(false);
+      setUserListings(data);
+    } catch (error) {
+      setshowListingsError(true);
+      setshowListingsLoading(false);
+    }
+  };
+
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-2xl text-center font-semibold my-4 text-slate-700">
@@ -229,6 +255,56 @@ export default function Profile() {
       <p className="text-green-700 mt-5">
         {updateSuccess ? "Profile successfully updated" : ""}
       </p>
+      <div className="flex justify-center">
+        <button
+          onClick={handleShowListings}
+          disabled={loading}
+          className="text-green-700 font-semibold border border-green-700 rounded-xl 
+          p-2 shadow-lg hover:opacity-90 disabled:opacity-70"
+        >
+          {showListingsLoading ? "Loading..." : "Show listings"}
+        </button>
+        <p className="text-red-500 mt-5">
+          {showListingsError ? "Error occured" : ""}
+        </p>
+      </div>
+      {userListings && userListings.length > 0 ? (
+        <>
+          <p className="text-2xl text-slate-700 font-semibold p-4 my-4 flex justify-center">
+            Your Listing
+          </p>
+          {userListings.map((listing) => (
+            <div
+              key={listing._id}
+              className="mt-6 gap-4 border flex justify-between items-center rounded-xl"
+            >
+              <Link to={`/listing/${listing._id}`}>
+                <img
+                  src={listing.imagesURL[0]}
+                  alt="Listing cover"
+                  className="w-32 object-contain max-w-full max-h-full rounded-xl"
+                />
+              </Link>
+              <Link
+                className="flex-1 text-slate-700 font-semibold hover:underline truncate"
+                to={`/listing/${listing._id}`}
+              >
+                <p>{listing.name}</p>
+              </Link>
+              <div className="flex flex-col">
+                <button type="button" className="p-2 text-red-700 uppercase">
+                  Delete
+                </button>
+                <button type="button" className="p-2 text-green-700 uppercase">
+                  Edit
+                </button>
+              </div>
+            </div>
+          ))}
+        </>
+      ) : (
+        ""
+      )}
     </div>
   );
 }
