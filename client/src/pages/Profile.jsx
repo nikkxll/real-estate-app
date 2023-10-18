@@ -283,31 +283,31 @@ export default function Profile() {
         </span>
       </div>
       <p className="text-red-500 mt-5">{error ? error : ""}</p>
-      <p className="text-green-700 mt-5">
+      <p className="text-green-700 mb-5">
         {updateSuccess ? "Profile successfully updated" : ""}
       </p>
       <div className="flex flex-row gap-4 justify-center">
-        <div className="flex justify-center">
+        <div className="flex justify-center gap-4">
           <button
             onClick={handleShowListings}
             disabled={loading}
             className="text-green-700 font-semibold border border-green-700 rounded-xl 
-            p-3 shadow-xl hover:opacity-90 disabled:opacity-70"
+            p-3 mx-4 shadow-xl hover:opacity-90 disabled:opacity-70"
           >
             {showListingsLoading ? "Loading..." : "Show listings"}
           </button>
-          <p className="text-red-500 mt-5">
-            {showListingsError ? "Error occured" : ""}
-          </p>
-        </div>
-        <button
-          onClick={executeScroll}
-          disabled={!listingSuccess}
-          className="text-slate-700 font-semibold border border-slate-700 rounded-xl 
+          <button
+            onClick={executeScroll}
+            disabled={!listingSuccess}
+            className="text-slate-700 font-semibold border border-slate-700 rounded-xl 
                   p-3 shadow-xl hover:opacity-90 disabled:opacity-70"
-        >
-          Scroll to the listings
-        </button>
+          >
+            Scroll to the listings
+          </button>
+        </div>
+        <p className="text-red-500 mt-5">
+          {showListingsError ? "Error occured" : ""}
+        </p>
       </div>
       {userListings && userListings.length > 0 ? (
         <div className="my-7">
