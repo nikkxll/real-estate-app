@@ -61,6 +61,11 @@ export default function CreateListing() {
   const handleImgSubmit = (e) => {
     setImgUploadError(false);
     setUploading(true);
+    if (files.length === 0) {
+      setImgUploadError("No images attached");
+      setUploading(false);
+      return;
+    }
     if (files.length > 0 && files.length + formData.imagesURL.length < 9) {
       const promises = [];
 
@@ -84,7 +89,7 @@ export default function CreateListing() {
           setUploading(false);
         });
     } else {
-      setImgUploadError("You can upload only 8 images per listing!");
+      setImgUploadError("You can upload only 8 images per listing");
       setUploading(false);
     }
   };
@@ -205,7 +210,7 @@ export default function CreateListing() {
       {errorUpdate ? (
         "Error occured while getting data, please try again."
       ) : (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        <form onSubmit={handleSubmit} className="flex flex-col">
           <div>
             <div className="flex flex-col sm:flex-row">
               <div className="flex-1 p-3">
@@ -367,9 +372,9 @@ export default function CreateListing() {
                     />
                     <div className="flex flex-col mx-3 justify-center">
                       <p>Regular price</p>
-                      {formData.type === "rent" && (
-                        <span className="text-sm">($ per month)</span>
-                      )}
+                      {formData.type === "rent" ? (
+                        <span className="text-sm">($ / month)</span>
+                      ) : <span className="text-sm">($)</span>}
                     </div>
                   </div>
                   {formData.offer && (
@@ -386,9 +391,9 @@ export default function CreateListing() {
                       />
                       <div className="flex flex-col mx-3 justify-center">
                         <p>Discounted price</p>
-                        {formData.type === "rent" && (
-                          <span className="text-sm">($ per month)</span>
-                        )}
+                        {formData.type === "rent" ? (
+                          <span className="text-sm">($ / month)</span>
+                        ) : <span className="text-sm">($)</span>}
                       </div>
                     </div>
                   )}
@@ -430,7 +435,7 @@ export default function CreateListing() {
                   </p>
                 </div>
               </div>
-              <div className="flex-1 p-4">
+              <div className="flex-shrink-0 sm:w-1/2 p-4">
                 <h1 className="text-3xl font-semibold text-center my-7 text-slate-700">
                   Uploaded images
                 </h1>
