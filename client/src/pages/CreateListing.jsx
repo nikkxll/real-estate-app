@@ -62,7 +62,7 @@ export default function CreateListing() {
         })
         .catch((error) => {
           setImgUploadError(
-            "Error occurred while loading (limit of max 2 mb per photo)"
+            "Error occurred while loading (limit of max 10 mb per photo)"
           );
           setUploading(false);
         });

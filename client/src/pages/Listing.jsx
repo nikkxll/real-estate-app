@@ -195,17 +195,17 @@ export default function Listing() {
             <p className="font-semibold text-2xl sm:mt-2">Description:</p>
             <p className="m-4 text-md text-slate-700">{listing.description}</p>
           </div>
-            {currentUser && listing.userRef !== currentUser._id && !contact && (
-              <button
-                onClick={() => setContact(true)}
-                className="bg-slate-700 p-3 mb-6 text-white
+          {currentUser && listing.userRef !== currentUser._id && !contact && (
+            <button
+              onClick={() => setContact(true)}
+              className="bg-slate-700 p-3 mb-6 text-white
         rounded-xl uppercase hover:opacity-90
         disabled:opacity-70 lg:w-[440px] md:w-[330px] mx-auto flex justify-center"
-              >
-                Contact landlord
-              </button>
-            )}
-            {contact && <Contact listing={listing}/>}
+            >
+              Contact landlord
+            </button>
+          )}
+          {contact && <Contact listing={listing} />}
         </>
       )}
     </main>
