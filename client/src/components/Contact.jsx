@@ -29,11 +29,6 @@ export default function Contact({ listing }) {
     fetchUser();
   }, [listing.userRef]);
 
-  const handleChange = (e) => {
-    const { value } = e.target;
-    setMessage(value);
-  };
-
   return (
     <>
       {landlord ? (
@@ -48,7 +43,7 @@ export default function Contact({ listing }) {
               <span className="font-semibold lowercase">{listing.name}:</span>
             </p>
             <textarea
-              onChange={handleChange}
+              onChange={(e) => setMessage(e.target.value)}
               name="message"
               id="message"
               className="border p-3 rounded-xl"
