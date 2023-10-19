@@ -14,14 +14,18 @@ import {
   FaDog,
   FaHome,
 } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import Contact from "../components/Contact";
 
 export default function Listing() {
   SwiperCore.use([Navigation, Pagination, Autoplay]);
+  const { currentUser } = useSelector((state) => state.user);
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const params = useParams();
   const [copied, setCopied] = useState(false);
+  const [contact, setContact] = useState(false);
 
   useEffect(() => {
     const fetchListing = async () => {
@@ -39,7 +43,6 @@ export default function Listing() {
         }
 
         setLoading(false);
-        setError(false);
         setListing(data);
       } catch (error) {
         setError(error.message);
@@ -49,8 +52,9 @@ export default function Listing() {
 
     fetchListing();
   }, []);
+
   return (
-    <main className="mt-[90px]">
+    <main className="mt-[20px] sm:mt-[90px]">
       {loading && <p className="text-center my-7 text-md">Loading...</p>}
       {error && (
         <p className="text-center text-red-700 my-7 text-md">
@@ -82,7 +86,7 @@ export default function Listing() {
           </Swiper>
         </>
       )}
-      <div className="fixed top-[15%] right-[3%] z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer">
+      <div className="fixed top-[22%] right-[3%] sm:top-[15%] sm:right-[3%] z-10 border rounded-full w-8 h-8 flex justify-center items-center bg-slate-100 cursor-pointer">
         <FaCopy
           className="text-slate-700"
           onClick={() => {
@@ -187,14 +191,21 @@ export default function Listing() {
               )}
             </li>
           </ul>
-          <div className="flex flex-col justify-center items-center w-full mx-auto p-6">
-            <p className="font-semibold text-2xl sm:mt-4">
-              Description:
-            </p>
-            <p className="m-4 text-md text-slate-700">
-              {listing.description}
-            </p>
+          <div className="flex flex-col justify-center items-center mx-auto p-6 pb-0">
+            <p className="font-semibold text-2xl sm:mt-2">Description:</p>
+            <p className="m-4 text-md text-slate-700">{listing.description}</p>
           </div>
+            {currentUser && listing.userRef !== currentUser._id && !contact && (
+              <button
+                onClick={() => setContact(true)}
+                className="bg-slate-700 p-3 mb-6 text-white
+        rounded-xl uppercase hover:opacity-90
+        disabled:opacity-70 lg:w-[440px] md:w-[330px] mx-auto flex justify-center"
+              >
+                Contact landlord
+              </button>
+            )}
+            {contact && <Contact listing={listing}/>}
         </>
       )}
     </main>
