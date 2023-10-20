@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ListingsBlock from "../components/ListingsBlock";
 
 export default function Search() {
   const [sidebarData, setSidebarData] = useState({
@@ -14,7 +15,7 @@ export default function Search() {
   });
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [listings, setListings] = useState(null);
+  const [listings, setListings] = useState([]);
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
@@ -120,9 +121,9 @@ export default function Search() {
           return;
         }
 
-        console.log(data);
         setLoading(false);
         setListings(data);
+        console.log(listings);
       } catch (error) {
         setError(error.message);
         setLoading(false);
@@ -241,6 +242,7 @@ export default function Search() {
             </select>
           </div>
           <button
+            disabled={loading}
             className="bg-slate-700 p-3 text-white
         rounded-xl uppercase hover:opacity-90 mt-7
         disabled:opacity-70"
@@ -248,9 +250,27 @@ export default function Search() {
             Search
           </button>
         </form>
+        <p className="text-red-500 mt-5 font-semibold">
+          {error ? "Error occured, please try again" : ""}
+        </p>
       </div>
       <div className="p-6 text-3xl font-semibold border-b text-slate-700">
         <h1>Listing results:</h1>
+        {loading ? (
+          <p className="text-xl mt-4 text-slate-700">Loading...</p>
+        ) : (
+          !loading &&
+          listings.length === 0 && (
+            <p className="text-xl mt-4 text-slate-700">
+              No listings found matching your criteria!
+            </p>
+          )
+        )}
+        {!loading &&
+          listings &&
+          listings.map((listing) => (
+            <ListingsBlock key={listing._id} listing={listing} />
+          ))}
       </div>
     </div>
   );

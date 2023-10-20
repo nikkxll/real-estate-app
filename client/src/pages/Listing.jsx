@@ -20,7 +20,7 @@ import Contact from "../components/Contact";
 export default function Listing() {
   SwiperCore.use([Navigation, Pagination, Autoplay]);
   const { currentUser } = useSelector((state) => state.user);
-  const [listing, setListing] = useState(null);
+  const [listing, setListing] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const params = useParams();
@@ -54,13 +54,26 @@ export default function Listing() {
   }, []);
 
   return (
-    <main className="mt-[20px] sm:mt-[90px]">
+    <main className="mt-[60px] sm:mt-[90px]">
       {loading && <p className="text-center my-7 text-md">Loading...</p>}
       {error && (
         <p className="text-center text-red-700 my-7 text-md">
           Something went wrong, please try again
         </p>
       )}
+      <div className="flex flex-col max-w-4xl gap-2 p-6 sm:ml-14">
+        <p className="text-3xl font-semibold">
+          {listing.name} - ${" "}
+          {listing.offer
+            ? listing.discountPrice.toLocaleString("en-US")
+            : listing.regularPrice.toLocaleString("en-US")}
+          {listing.type === "rent" && " / month"}
+        </p>
+        <p className="flex items-center gap-1 text-slate-700 text-sm">
+          <FaMapMarkerAlt className="text-green-700" />
+          {listing.address}
+        </p>
+      </div>
       {listing && !loading && !error && (
         <>
           <Swiper
@@ -78,7 +91,7 @@ export default function Listing() {
                   className="h-[500px]"
                   style={{
                     background: `url(${url}) center no-repeat`,
-                    backgroundSize: "contain",
+                    backgroundSize: "90% 100%",
                   }}
                 ></div>
               </SwiperSlide>
@@ -86,7 +99,7 @@ export default function Listing() {
           </Swiper>
         </>
       )}
-      <div className="fixed top-[22%] right-[3%] sm:top-[15%] sm:right-[3%] z-10 border rounded-full w-8 h-8 flex justify-center items-center bg-slate-100 cursor-pointer">
+      <div className="fixed top-[22%] right-[5%] sm:top-[15%] sm:right-[3%] z-10 border rounded-full w-8 h-8 flex justify-center items-center bg-slate-100 cursor-pointer">
         <FaCopy
           className="text-slate-700"
           onClick={() => {
@@ -99,25 +112,12 @@ export default function Listing() {
         />
       </div>
       {copied && (
-        <p className="fixed top-[24%] right-[1%] z-10 rounded-md bg-slate-100 text-slate-700 p-2">
+        <p className="fixed top-[28%] right-[1%] sm:top-[21%] sm:right-[1%] z-10 rounded-md bg-slate-200 text-slate-700 p-2">
           Link copied!
         </p>
       )}
       {listing && (
         <>
-          <div className="flex justify-center max-w-4xl mx-auto my-3 gap-4">
-            <p className="text-3xl font-semibold">
-              {listing.name} - ${" "}
-              {listing.offer
-                ? listing.discountPrice.toLocaleString("en-US")
-                : listing.regularPrice.toLocaleString("en-US")}
-              {listing.type === "rent" && " / month"}
-            </p>
-          </div>
-          <p className="flex items-center justify-center mt-1 gap-1 text-slate-700 text-sm">
-            <FaMapMarkerAlt className="text-green-700" />
-            {listing.address}
-          </p>
           <div className="flex justify-center gap-4 mt-6">
             <p className="bg-red-700 w-full max-w-[100px] sm:max-w-[200px] text-white text-center p-1 rounded-md">
               {listing.type === "rent" ? "For Rent" : "For Sale"}
