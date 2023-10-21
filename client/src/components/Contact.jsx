@@ -36,11 +36,11 @@ export default function Contact({ listing }) {
           <div className="flex flex-col mx-auto p-6 pt-0">
             <p className="m-4">
               Contact{" "}
-              <span className="font-semibold lowercase">
+              <span className="font-semibold">
                 {landlord.username}
               </span>{" "}
               for{" "}
-              <span className="font-semibold lowercase">{listing.name}:</span>
+              <span className="font-semibold">{listing.name}:</span>
             </p>
             <textarea
               onChange={(e) => setMessage(e.target.value)}

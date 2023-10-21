@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
@@ -20,12 +20,14 @@ import Contact from "../components/Contact";
 export default function Listing() {
   SwiperCore.use([Navigation, Pagination, Autoplay]);
   const { currentUser } = useSelector((state) => state.user);
-  const [listing, setListing] = useState('');
+  const [listing, setListing] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const params = useParams();
   const [copied, setCopied] = useState(false);
   const [contact, setContact] = useState(false);
+  const contactRef = useRef(null);
+
 
   useEffect(() => {
     const fetchListing = async () => {
@@ -53,27 +55,35 @@ export default function Listing() {
     fetchListing();
   }, []);
 
+  const handleContact = () => {
+    setContact(true);
+  };
+
   return (
     <main className="mt-[60px] sm:mt-[90px]">
-      {loading && <p className="text-center my-7 text-md">Loading...</p>}
-      {error && (
-        <p className="text-center text-red-700 my-7 text-md">
-          Something went wrong, please try again
-        </p>
+      {listing && (
+        <>
+          {loading && <p className="text-center my-7 text-md">Loading...</p>}
+          {error && (
+            <p className="text-center text-red-700 my-7 text-md">
+              Something went wrong, please try again
+            </p>
+          )}
+          <div className="flex flex-col max-w-4xl gap-2 p-6 sm:ml-14">
+            <p className="text-3xl font-semibold">
+              {listing.name} - ${" "}
+              {listing.offer
+                ? listing.discountPrice.toLocaleString("en-US")
+                : listing.regularPrice.toLocaleString("en-US")}
+              {listing.type === "rent" && " / month"}
+            </p>
+            <p className="flex items-center gap-1 text-slate-700 text-sm">
+              <FaMapMarkerAlt className="text-green-700" />
+              {listing.address}
+            </p>
+          </div>
+        </>
       )}
-      <div className="flex flex-col max-w-4xl gap-2 p-6 sm:ml-14">
-        <p className="text-3xl font-semibold">
-          {listing.name} - ${" "}
-          {listing.offer
-            ? listing.discountPrice.toLocaleString("en-US")
-            : listing.regularPrice.toLocaleString("en-US")}
-          {listing.type === "rent" && " / month"}
-        </p>
-        <p className="flex items-center gap-1 text-slate-700 text-sm">
-          <FaMapMarkerAlt className="text-green-700" />
-          {listing.address}
-        </p>
-      </div>
       {listing && !loading && !error && (
         <>
           <Swiper
@@ -91,7 +101,7 @@ export default function Listing() {
                   className="h-[500px]"
                   style={{
                     background: `url(${url}) center no-repeat`,
-                    backgroundSize: "90% 100%",
+                    backgroundSize: "60% 100%",
                   }}
                 ></div>
               </SwiperSlide>
@@ -197,10 +207,11 @@ export default function Listing() {
           </div>
           {currentUser && listing.userRef !== currentUser._id && !contact && (
             <button
-              onClick={() => setContact(true)}
-              className="bg-slate-700 p-3 mb-6 text-white
+              onClick={handleContact}
+              className="bg-slate-700 p-3 mb-6 mt-2 text-white
         rounded-xl uppercase hover:opacity-90
         disabled:opacity-70 lg:w-[440px] md:w-[330px] mx-auto flex justify-center"
+              id="contact-landlord"
             >
               Contact landlord
             </button>

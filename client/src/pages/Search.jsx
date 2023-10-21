@@ -254,23 +254,25 @@ export default function Search() {
           {error ? "Error occured, please try again" : ""}
         </p>
       </div>
-      <div className="p-6 text-3xl font-semibold border-b text-slate-700">
-        <h1>Listing results:</h1>
-        {loading ? (
-          <p className="text-xl mt-4 text-slate-700">Loading...</p>
-        ) : (
-          !loading &&
-          listings.length === 0 && (
-            <p className="text-xl mt-4 text-slate-700">
-              No listings found matching your criteria!
-            </p>
-          )
-        )}
-        {!loading &&
-          listings &&
-          listings.map((listing) => (
-            <ListingsBlock key={listing._id} listing={listing} />
-          ))}
+      <div className="flex-1">
+        <h1 className="p-6 text-3xl flex justify-center font-semibold border-b text-slate-700">Listing results:</h1>
+        <div className="p-7 flex flex-wrap gap-6 justify-center">
+          {loading ? (
+            <p className="text-xl mt-4 text-slate-700">Loading...</p>
+          ) : (
+            !loading &&
+            listings.length === 0 && (
+              <p className="text-xl mt-4 text-slate-700">
+                No listings found matching your criteria!
+              </p>
+            )
+          )}
+          {!loading &&
+            listings &&
+            listings.map((listing) => (
+              <ListingsBlock key={listing._id} listing={listing} />
+            ))}
+        </div>
       </div>
     </div>
   );

@@ -28,8 +28,8 @@ export default function OAuth() {
       const data = await res.json();
       dispatch(signInSuccess(data));
       navigate(target);
-    } catch (e) {
-      console.log("Could not sign in", e);
+    } catch (error) {
+      console.log("Could not sign in", error);
     }
   };
   return (
