@@ -17,6 +17,7 @@ export default function Search() {
   const [loading, setLoading] = useState(false);
   const [listings, setListings] = useState([]);
   const [error, setError] = useState(null);
+  const [showMore, setShowMore] = useState(false);
 
   const handleChange = (e) => {
     if (
@@ -115,6 +116,10 @@ export default function Search() {
         const res = await fetch(`/api/listing/search?${searchQuery}`);
         const data = await res.json();
 
+        if (data.length === 4) {
+          setShowMore(true);
+        }
+
         if (data.success === false) {
           setError(data.message);
           setLoading(false);
@@ -123,7 +128,6 @@ export default function Search() {
 
         setLoading(false);
         setListings(data);
-        console.log(listings);
       } catch (error) {
         setError(error.message);
         setLoading(false);
@@ -132,6 +136,20 @@ export default function Search() {
 
     fetchListings();
   }, [location.search]);
+
+  const onShowMoreClick = async () => {
+    const numberOfListings = listings.length;
+    const startIndex = numberOfListings;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+    const res = await fetch(`/api/listing/search?${searchQuery}`);
+    const data = await res.json();
+    if (data.length < 4) {
+      setShowMore(false);
+    }
+    setListings([...listings, ...data])
+  };
 
   return (
     <div className="flex flex-col md:flex-row mt-[20px] sm:mt-[90px]">
@@ -255,7 +273,9 @@ export default function Search() {
         </p>
       </div>
       <div className="flex-1">
-        <h1 className="p-6 text-3xl flex justify-center font-semibold border-b text-slate-700">Listing results:</h1>
+        <h1 className="p-6 text-3xl flex justify-center font-semibold border-b text-slate-700">
+          Listing results:
+        </h1>
         <div className="p-7 flex flex-wrap gap-6 justify-center">
           {loading ? (
             <p className="text-xl mt-4 text-slate-700">Loading...</p>
@@ -272,6 +292,15 @@ export default function Search() {
             listings.map((listing) => (
               <ListingsBlock key={listing._id} listing={listing} />
             ))}
+
+          {showMore && (
+            <button
+              onClick={onShowMoreClick}
+              className="text-blue-700 hover:underline p-2"
+            >
+              Show more
+            </button>
+          )}
         </div>
       </div>
     </div>
