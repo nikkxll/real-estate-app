@@ -38,7 +38,7 @@ export default function ListingsBlock({ listing }) {
               : listing.regularPrice.toLocaleString("en-US")}
             {listing.type === "rent" && " / month"}
           </p>
-          <ul className="font-semibold text-sm flex flex-row mt-3 sm:gap-4">
+          <ul className="font-semibold text-sm flex flex-wrap sm:flex-row mt-3 sm:gap-4 gap-2">
             <li className="flex items-center gap-1 whitespace-nowrap">
               <FaHome className="text-green-700" />
               <p className="text-green-700 font-semibold">

@@ -286,7 +286,7 @@ export default function Profile() {
       <p className="text-green-700 mb-5">
         {updateSuccess ? "Profile successfully updated" : ""}
       </p>
-      <div className="flex flex-row gap-4 justify-center">
+      <div className="flex flex-row gap-4 justify-center mb-6">
         <div className="flex justify-center gap-4">
           <button
             onClick={handleShowListings}

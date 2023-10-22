@@ -152,7 +152,7 @@ export default function Search() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row mt-[20px] sm:mt-[90px]">
+    <div className="flex flex-col md:flex-row mt-[60px] sm:mt-[90px]">
       <div className="p-6 border-b-2 md:border-r-2 md:min-h-screen">
         <form onSubmit={handleSubmit} className="flex flex-col">
           <div className="flex items-center justify-center">
