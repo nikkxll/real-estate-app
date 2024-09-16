@@ -9,7 +9,7 @@ export const verifyToken = (req, res, next) => {
     }
 
     const cookie = cookieHeader.split("=");
-    const token = cookie[1];
+    const token = cookie[2];
 
     if (!token) return next(errHandler(401, 'Token does not exist'));
 
