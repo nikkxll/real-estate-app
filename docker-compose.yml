@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo-data:/data/db
+    networks:
+      - shared
+
+  api:
+    container_name: api
+    restart: unless-stopped
+    image: real-estate-api:1.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - shared
+    depends_on:
+      - mongo
+
+  client:
+    container_name: client
+    restart: unless-stopped
+    image: real-estate-client:1.0.0
+    build:
+      context: client
+      dockerfile: Dockerfile
+    ports:
+      - 5173:5173
+    networks:
+      - shared
+    depends_on:
+      - api
+
+networks:
+  shared:
