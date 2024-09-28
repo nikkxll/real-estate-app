@@ -69,9 +69,19 @@ docker-compose build
 docker-compose up
 ```
 
-Open ```localhost``` on port 3000 in the browser
+Open ```localhost``` on port ```3000``` in the browser
 
 ## Preview
 
+<div align="center">
+
+![real-estate](https://github.com/user-attachments/assets/11fe204f-8622-4e19-a752-eea1e5ff43a4)
+![2](https://github.com/user-attachments/assets/02db382e-6468-41ca-9bd9-585b73dc9da4)
+![3](https://github.com/user-attachments/assets/30835a26-d253-497e-a5ca-dd93c2b14a3f)
+![4](https://github.com/user-attachments/assets/7cd4ea68-d629-4db9-8547-2e6e0fe5f7b3)
+
+</div>
+
+##
 
 LinkedIn: [Dmitrii Nikiforov](https://www.linkedin.com/in/dmitriinikiforov/) | Tableau: [dmitriinikiforov](https://public.tableau.com/app/profile/nikiforov.dmitrii/vizzes)
