@@ -270,7 +270,11 @@ export default function Profile() {
       </form>
       <div className="mt-4 flex justify-between">
         <span
-          onClick={handleDelete}
+          onClick={() => {
+            if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+              handleDelete();
+            }
+          }}
           className="text-red-600 cursor-pointer font-semibold"
         >
           Delete Account

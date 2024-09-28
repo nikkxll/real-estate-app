@@ -14,22 +14,26 @@ import Footer from './components/Footer'
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/about' element={<About />} />
-        <Route path='/search' element={<Search />} />
-        <Route path='/sign-up' element={<SignUp />} />
-        <Route path='/sign-in' element={<SignIn />} />
-        <Route path='/listing/:id' element={<Listing />} />
-        <Route element={<PrivateRoute />} >
-          <Route path='/profile' element={<Profile />} />
-          <Route path='/create-listing' element={<CreateListing />} />
-          <Route path='/update-listing/:id' element={<UpdateListing />} />
-        </Route>
-      </Routes>
-      <Footer />
-    </BrowserRouter>
+    <div className="min-h-screen flex flex-col">
+      <BrowserRouter>
+        <Header />
+        <main className="flex-grow">
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/about' element={<About />} />
+            <Route path='/search' element={<Search />} />
+            <Route path='/sign-up' element={<SignUp />} />
+            <Route path='/sign-in' element={<SignIn />} />
+            <Route path='/listing/:id' element={<Listing />} />
+            <Route element={<PrivateRoute />}>
+              <Route path='/profile' element={<Profile />} />
+              <Route path='/create-listing' element={<CreateListing />} />
+              <Route path='/update-listing/:id' element={<UpdateListing />} />
+            </Route>
+          </Routes>
+        </main>
+        <Footer />
+      </BrowserRouter>
+    </div>
   )
 }

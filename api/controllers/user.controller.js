@@ -3,10 +3,6 @@ import User from "../models/user.model.js";
 import { errHandler } from "../utils/error.js";
 import Listing from "../models/listing.model.js";
 
-export const test = (req, res) => {
-  res.send("Hi");
-};
-
 export const updateUser = async (req, res, next) => {
   if (req.user.id !== req.params.id)
     return next(errHandler(401, "Permission denied"));
@@ -41,11 +37,12 @@ export const deleteUser = async (req, res, next) => {
     return next(errHandler(401, "Permission denied"));
   }
   try {
+    await Listing.deleteMany({ userRef: req.params.id });
     await User.findByIdAndDelete(req.params.id);
     res
       .clearCookie("access_token")
       .status(200)
-      .json("User successfully deleted");
+      .json("User and all associated listings successfully deleted");
   } catch (error) {
     next(error);
   }
