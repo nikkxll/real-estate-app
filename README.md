@@ -69,6 +69,8 @@ docker-compose build
 docker-compose up
 ```
 
+Open ```localhost``` on port 3000 in the browser
+
 ## Preview
 
 
