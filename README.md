@@ -12,7 +12,7 @@
 
 ## Overview
 
-This project simulates a real-estate platform for renting properties, with a following tech stack:
+This project simulates a real-estate platform for buying, selling and renting properties, with a following tech stack:
 
 - **Frontend**: React, Vite, TailwindCSS, Redux
 - **Backend**: Node.js, Express.js, MongoDB, Firebase
