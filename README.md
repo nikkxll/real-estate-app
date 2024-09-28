@@ -35,7 +35,7 @@ Both the API and Client require environment variables to function properly. You 
 
 #### API Setup
 
-In the ```.env``` file inside the ```api``` folder, add the following variables:
+In the ```.env``` file in the root of the project, add the following variables:
 
 ```JWT_SECRET``` 
 Generate a random JWT secret using the following script:
