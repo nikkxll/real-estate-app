@@ -14,9 +14,7 @@
 
 This project simulates a real-estate platform for buying, selling and renting properties, with a following tech stack:
 
-- **Frontend**: React, Vite, TailwindCSS, Redux
-- **Backend**: Node.js, Express.js, MongoDB, Firebase
-- **Containerization**: Docker, Docker Compose
+[![Stack](https://skillicons.dev/icons?i=react,nodejs,express,tailwind,redux,mongodb,firebase,docker)](https://skillicons.dev)
 
 ## Setup
 
